@@ -1,24 +1,24 @@
-export const RECEIVE_QUESTIONS = 'RECEIVE_QUESTIONS';
-export const ADD_QUESTION = 'ADD_QUESTION';
-export const SAVE_QUESTION_ANSWER = 'SAVE_QUESTION_ANSWER';
+export const GET_QAS = 'GET_QAS';
+export const CREATE_QA = 'CREATE_QA';
+export const REPLY_QA = 'REPLY_QA';
 
 export function addQuestion (question) {
   return {
-    type: ADD_QUESTION,
+    type: CREATE_QA,
     question
   }
 }
 
 export function receiveQuestions(questions){
   return{
-    type: RECEIVE_QUESTIONS,
+    type: GET_QAS,
     questions
   }
 }
 
 export function saveQuestionAnswer(authedUser, qid, answer) {
   return {
-    type: SAVE_QUESTION_ANSWER,
+    type: REPLY_QA,
     authedUser,
     qid,
     answer

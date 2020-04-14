@@ -7,10 +7,8 @@ const NotFound = ({ history }) => (
   <Card>
     <CardHeader>404</CardHeader>
     <CardBody>
-      <CardTitle>Page Not Found</CardTitle>
-      <Button size="small" color="primary" onClick={() => history.push("/")}>
-        Go Home
-      </Button>
+      <CardTitle>That doesnt exist!</CardTitle>
+      <Button size="small" color="primary" onClick={() => history.push("/")}>Go back</Button>
     </CardBody>
   </Card>
 );

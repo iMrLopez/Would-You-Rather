@@ -9,8 +9,6 @@ function generateUID () {
 }
 
 export function formatQuestion ({ optionOneText, optionTwoText, author }) {
-  console.log("formatQuestion");
-  console.log(optionOneText, optionTwoText, author)
   return {
     id: generateUID(),
     timestamp: Date.now(),

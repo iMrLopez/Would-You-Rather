@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import Question from './Question';
-import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
+import { TabContent, TabPane, Nav, NavItem, NavLink, Row } from 'reactstrap';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -26,21 +26,18 @@ class DashBoard extends PureComponent {
           <NavItem>
             <NavLink
               className={classnames({ active: this.state.activeTab === '1' })}
-              onClick={() => { this.toggle('1'); }}
-            >
-              Unanswered
+              onClick={() => { this.toggle('1'); }} >
+              Not Answered
             </NavLink>
           </NavItem>
           <NavItem>
             <NavLink
               className={classnames({ active: this.state.activeTab === '2' })}
-              onClick={() => { this.toggle('2'); }}
-            >
+              onClick={() => { this.toggle('2'); }} >
               Answered
             </NavLink>
           </NavItem>
         </Nav>
-
         <TabContent activeTab={this.state.activeTab} className="qastab">
           <TabPane tabId="1">
             {unansweredQuestions.map(qid =>
@@ -73,12 +70,9 @@ DashBoard.propTypes = {
 
 function mapStateToProps ({ questions, users, authedUser }) {
   const user = users[authedUser];
-  const answeredQuestions = Object.keys(user.answers)
-    .sort((a,b) => questions[b].timestamp - questions[a].timestamp);
+  const answeredQuestions = Object.keys(user.answers).sort((a,b) => questions[b].timestamp - questions[a].timestamp);
   return {
-    unansweredQuestions : Object.keys(questions).filter(qid => !answeredQuestions.includes(qid))
-      .sort((a,b) => questions[b].timestamp - questions[a].timestamp),
-    answeredQuestions
+    unansweredQuestions : Object.keys(questions).filter(qid => !answeredQuestions.includes(qid)).sort((a,b) => questions[b].timestamp - questions[a].timestamp),answeredQuestions
   }
 }
 

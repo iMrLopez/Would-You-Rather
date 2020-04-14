@@ -1,19 +1,19 @@
-import {RECEIVE_QUESTIONS, ADD_QUESTION, SAVE_QUESTION_ANSWER} from '../actions/questions'
+import {GET_QAS, CREATE_QA, REPLY_QA} from '../actions/questions'
 
 export default function questions (state = {}, action){
   switch(action.type){
-    case RECEIVE_QUESTIONS:
+    case GET_QAS:
       return {
         ...state,
         ...action.questions
       };
-    case ADD_QUESTION:
+    case CREATE_QA:
       const { question } = action;
       return {
         ...state,
         [question.id]: question,
       };
-    case SAVE_QUESTION_ANSWER:
+    case REPLY_QA:
       const { authedUser, qid, answer } = action;
       return {
         ...state,

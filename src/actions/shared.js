@@ -5,8 +5,7 @@ import { _saveQuestionAnswer, _saveQuestion } from '../utils/_DATA'
 
 export function handleInitialData() {
     return (dispatch) => {
-        return getInitialData()
-            .then(({ users, questions})=> {
+        return getInitialData().then(({ users, questions})=> {
                 dispatch(receiveUsers(users));
                 dispatch(receiveQuestions(questions))
         })
@@ -20,8 +19,7 @@ export function handleAddQuestion (optionOneText, optionTwoText){
             optionOneText,
             optionTwoText,
             author: authedUser
-        })
-        .then((question) => {
+        }).then((question) => {
             dispatch(addQuestion(question));
             dispatch(addUserQuestion(authedUser, question.id))
         })
@@ -37,8 +35,7 @@ export function handleAnswer (qid, option) {
         qid,
         answer: option
       };
-      _saveQuestionAnswer(info)
-          .then(() => {
+      _saveQuestionAnswer(info).then(() => {
               dispatch(saveQuestionAnswer(authedUser, qid, option));
               dispatch(saveUserAnswer(authedUser, qid, option))
           })
