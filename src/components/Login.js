@@ -3,8 +3,13 @@ import { Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { setAuthedUser } from '../actions/authedUser'
+import { Redirect } from 'react-router-dom'
 
 class Login extends PureComponent {
+  state = {
+    redirectToReferrer: false
+  }
+
   constructor(props) {
     super(props);
     this.state = {userId : ''};
@@ -16,20 +21,31 @@ class Login extends PureComponent {
     this.setState({userId: event.target.value});
   }
 
-  handleSubmit(event) {
+  async handleSubmit(event) {
     const { userId } = this.state;
     const { authenticate } = this.props;
+    event.preventDefault();
+
     if (userId) {
-      authenticate(userId);
+      await authenticate(userId);
+      this.setState(() => ({
+        redirectToReferrer: true
+      }));
     } else {
       alert('Please select a user before.');
     }
-    event.preventDefault();
   }
 
   render() {
     const { users } = this.props;
     const { userId } = this.state;
+
+    const { from } = this.props.location.state || { from: { pathname: '/' } }
+    const { redirectToReferrer } = this.state
+    if (redirectToReferrer) {
+      return <Redirect to={from} />
+    }
+
     return (
       <Row>
         <Col sm="12" md={{ size: 6, offset: 3 }}>

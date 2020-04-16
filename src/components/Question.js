@@ -8,10 +8,12 @@ class Question extends React.Component {
   constuctor() {
     this.loadQuestionDetails = this.routeChange.bind(this);
   }
+
   loadQuestionDetails(e, questionId) {
     let path = `/questions/`+questionId;
     this.props.history.push(path);
   }
+  
   render() {
     const {question, auth} = this.props;
     return (

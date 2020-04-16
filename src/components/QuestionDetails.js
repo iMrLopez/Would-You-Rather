@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import User from './User';
 import { handleAnswer } from '../actions/shared';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom'
 
 class QuestionDetails extends PureComponent {
   state = {
@@ -24,6 +25,10 @@ class QuestionDetails extends PureComponent {
   render() {
     const { question, questionAuthor, answer, total, percOne, percTwo} = this.props;
     const { selectedOption } = this.state;
+
+    if(!question) {
+      return <Redirect to={{ pathname: '/404' }} />
+    }
 
     return (
       <Row>
@@ -98,16 +103,18 @@ function financial(x) {
 
 function mapStateToProps ({ questions, users, authedUser }, { match }) {
   const answers = users[authedUser].answers;
-  let answer, percOne, percTwo, total;
+  let answer, percOne, percTwo, total, questionAuthor;
   const { id } = match.params;
   const question = questions[id];
-  if (answers.hasOwnProperty(question.id)) {
-    answer = answers[question.id]
+  if(question) {
+    if (answers.hasOwnProperty(question.id)) {
+      answer = answers[question.id]
+    }
+    questionAuthor = users[question.author];
+    total = question.optionOne.votes.length + question.optionTwo.votes.length;
+    percOne = financial((question.optionOne.votes.length / total) * 100);
+    percTwo = financial((question.optionTwo.votes.length / total) * 100);
   }
-  const questionAuthor = users[question.author];
-  total = question.optionOne.votes.length + question.optionTwo.votes.length;
-  percOne = financial((question.optionOne.votes.length / total) * 100);
-  percTwo = financial((question.optionTwo.votes.length / total) * 100);
   return {
     question,
     questionAuthor,

@@ -1,6 +1,6 @@
-import React, { Fragment } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import { Switch, Route } from "react-router-dom";
+import { Route, Redirect } from 'react-router-dom'
 
 import Dashboard from './Dashboard'
 import LeaderBoard from './LeaderBoard'
@@ -10,21 +10,32 @@ import QuestionDetails from "./QuestionDetails"
 import NotFound from "./NotFound"
 import Logout from './Logout'
 
+
+let notLoggedIn;
+
+const PrivateRoute = ({ component: Component, ...rest }) => (
+
+  <Route {...rest} render={(props) => (
+    notLoggedIn === true
+      ? <Redirect to={{
+          pathname: '/login',
+          state: { from: props.location }
+        }} />
+      : <Component {...props} /> 
+  )} />
+)
+
+
 function Routes(props) {
+  notLoggedIn = props.notLoggedIn;
   return <div className="container">
-    <Switch>
-      {
-        props.notLoggedIn ? <Route path='/' exact component={Login}/> :
-          <Fragment>
-            <Route path='/' exact component={Dashboard} />
-            <Route path='/leaderboard' exact component={LeaderBoard} />
-            <Route path='/add' component={NewQuestion}/>
-            <Route path="/questions/:id" component={QuestionDetails} />
-            <Route exact path='/logout' component={Logout} />
-          </Fragment>
-      }
-      <Route component={NotFound} />
-    </Switch>
+    <Route path='/login' exact component={Login}/> 
+    <PrivateRoute path='/' exact component={Dashboard} />
+    <PrivateRoute path='/leaderboard' exact component={LeaderBoard} />
+    <PrivateRoute path='/add' component={NewQuestion}/>
+    <PrivateRoute path="/questions/:id" component={QuestionDetails} />
+    <PrivateRoute exact path='/logout' component={Logout} />
+    <PrivateRoute exact path='/404' component={NotFound} />
   </div>;
 }
 
